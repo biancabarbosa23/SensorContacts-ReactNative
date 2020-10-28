@@ -8,6 +8,8 @@ import {
   AsyncStorage
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+import * as Contacts from 'expo-contacts'
 
 function ListItem({ data }) {
   const navigation = useNavigation()  
@@ -22,7 +24,30 @@ function ListItem({ data }) {
       });
   }
 
+  async function handleDeleteContact(){
+    Alert.alert('Alerta', 'Deseja mesmo apagar esse contato?', [
+      { text: 'Não', style: 'cancel' },
+      {
+          text: 'Sim', onPress: async () => {
+            await Contacts.removeContactAsync(data.id)
+          }
+      },
+  ])
+  }
+
+  function handleRightActions(){
+    return (
+      <View>
+              <TouchableOpacity style={styles.buttonDelete} onPress={handleDeleteContact}>
+                  <Text style={styles.textButtonDelete}>Deletar</Text>
+              </TouchableOpacity>
+      </View>
+
+  )
+  }
+
   return (
+    <Swipeable renderRightActions={handleRightActions}>
       <TouchableOpacity
         style={styles.container}
         onPress={handleNavigation}
@@ -32,6 +57,7 @@ function ListItem({ data }) {
           <Text style={styles.text}>Numero: {number} </Text>
         </View>
       </TouchableOpacity>
+      </Swipeable>
   )
 }
 
@@ -50,16 +76,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 17,
   },
-  textDesativado: {
-    fontSize: 17,
-    color: '#ff0000',
-  },
   divInfo: {
     flex: 1,
     width: '70%',
     justifyContent: 'center',
   },
-  buttonDesativar: {
+  buttonDelete: {
     backgroundColor: '#ff0000',
     height: 100,
     width: 100,
@@ -69,17 +91,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 8,
     borderBottomEndRadius: 8,
   },
-  buttonAtivar: {
-    backgroundColor: '#2BAE66FF',
-    height: 100,
-    width: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-    borderTopEndRadius: 8,
-    borderBottomEndRadius: 8,
-  },
-  textButton: {
+  textButtonDelete: {
     color: '#fff',
     fontSize: 18,
   },

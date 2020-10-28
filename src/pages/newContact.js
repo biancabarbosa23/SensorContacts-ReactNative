@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  StyleSheet,
   SafeAreaView,
   View,
   Text,
@@ -30,6 +29,8 @@ export default function NewContact() {
       const newData = await Contacts.addContactAsync(contact);
 
       Alert.alert('Adicionado com sucesso')
+      setName(null)
+      setNumber(null)
   }
 
   return (
