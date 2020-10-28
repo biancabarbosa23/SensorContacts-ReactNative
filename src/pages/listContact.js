@@ -44,7 +44,7 @@ export default function ListContact() {
       Clique para alterar
     </Text>
     <TouchableOpacity style = {styles.icon} 
-    onPress={navigation.reset({routes: [{ name: "NewContact" }]})}
+    onPress={()=>navigation.reset({routes: [{ name: "NewContact" }]})}
     >
     <AntDesign name="pluscircle" size={30} color="black" />
     </TouchableOpacity>
